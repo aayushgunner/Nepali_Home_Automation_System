@@ -1,6 +1,5 @@
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
-import pytorch
 def extract_speech_with_noise_reduction(input_file, output_file, silence_thresh=-40, noise_reduction_strength=1000):
     # Load the audio file
     audio = AudioSegment.from_file(input_file)
@@ -28,7 +27,7 @@ def extract_speech_with_noise_reduction(input_file, output_file, silence_thresh=
 
 if __name__ == "__main__":
     input_file = "recorded_audio.wav"
-    output_file = "output_speech_with_noise_reduction.wav"
+    output_file = "no_noise_audioRecord.wav"
 
     print("Extracting speech and applying noise reduction...")
     extract_speech_with_noise_reduction(input_file, output_file)
