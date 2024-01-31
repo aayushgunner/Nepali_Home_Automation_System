@@ -6,7 +6,7 @@ input_audio_file = "recorded_audio_1.wav"
 audio = AudioSegment.from_file(input_audio_file, format="wav")
 
 # Reduce noise (adjust the dB parameter as needed)
-reduced_audio = audio - 20
+reduced_audio = audio - 10
 
 # Save the output
 output_audio_file = "output_audio_file.wav"
