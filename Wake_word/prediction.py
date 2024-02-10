@@ -23,12 +23,15 @@ while True:
     mfcc = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40) #mfcc value of input
     mfcc_processed = np.mean(mfcc.T, axis=0)                        #processed mfcc
 
-    prediction = model.predict(np.expand_dims(mfcc_processed, axis=0))  
+    prediction = model.predict(np.expand_dims(mfcc_processed, axis=0))
     if prediction[:, 1] > 0.99:
         print(f"Wake Word Detected for ({i})")
         print("Confidence:", prediction[:, 1])
         i += 1
-    
+        # with open("hehe.py") as f:
+        #     exec(f.read())                                          #transfers control but still continues running
+        #     break
+
     else:
         print(f"Wake Word NOT Detected")
         print("Confidence:", prediction[:, 0])

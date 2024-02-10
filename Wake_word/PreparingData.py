@@ -10,6 +10,7 @@ def record_audio_and_save(save_path, n_times=100):                              
         sd.wait()
         write(save_path + str(i) + ".wav", fs, myrecording)                         #save recording
         #input(f"Press to record next or to stop, press ctrl c ({i+1}/{n_times})")
+        print("Next")
     pass
 
 def record_background_save(save_path, n_times=100):                                 #background audio
@@ -20,6 +21,7 @@ def record_background_save(save_path, n_times=100):                             
         myrecording = sd.rec(int(seconds*fs), samplerate = fs, channels = 2)
         sd.wait()
         write(save_path + str(i) + ".wav", fs, myrecording)                         #save recording
+        print("Next")
     pass
 
 
