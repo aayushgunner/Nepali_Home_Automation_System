@@ -5,8 +5,6 @@ import numpy as np
 import json
 
 # Function to extract MFCC features from audio files in a folder
-
-# Function to extract MFCC features from audio files in a folder
 def extract_mfcc_from_folder(folder_path, n_fft=2048, hop_length=512, n_mfcc=13):
     mfcc_list = []
     for filename in os.listdir(folder_path):
@@ -14,9 +12,9 @@ def extract_mfcc_from_folder(folder_path, n_fft=2048, hop_length=512, n_mfcc=13)
             audio_path = os.path.join(folder_path, filename)
             signal, sr = librosa.load(audio_path)
             mfccs = librosa.feature.mfcc(y=signal, sr=sr, n_fft=n_fft, hop_length=hop_length, n_mfcc=n_mfcc)
-            # Extend the list with each MFCC feature vector
-            mfcc_list.extend(mfccs.T.tolist())  
+            mfcc_list.append(mfccs.T.tolist())  # Convert NumPy array to list and append to list
     return mfcc_list
+
 # Define paths to the folders containing audio files
 folder_paths = [
     "/home/aayushgunner/aayush/coding/Nepali_Home_Automation_System/Wake_word/audioSamples/NoiseReduced"
