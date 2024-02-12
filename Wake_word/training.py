@@ -36,9 +36,11 @@ model.compile(
     metrics=['accuracy']
 )
 
-print("Model Score: \n")
+
 history = model.fit(X_train, y_train, epochs=1000)                                              #training
 model.save("saved_model/WWD.h5")
+
+print("Model Score: \n")
 score = model.evaluate(X_test, y_test)
 print(score)
 
