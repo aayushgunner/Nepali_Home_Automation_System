@@ -27,7 +27,7 @@ class Net(nn.Module):
         return x
 
 # Load your data
-df = pd.read_pickle("Final_audio_data_csv/audio_data.csv")
+df = pd.read_pickle(r'D:\Voice\Project\Nepali_Home_Automation_System\Wake_word\Final_audio_data/audio_data.csv')
 X = df["feature"].values
 X = np.concatenate(X, axis=0).reshape(len(X), 40)
 y = np.array(df["class_label"].tolist())
@@ -70,7 +70,7 @@ for epoch in range(epochs):
     print(f"Epoch [{epoch+1}/{epochs}], Loss: {running_loss/len(train_loader)}")
 
 # Save trained model
-torch.save(model, "saved_model/WWD.pth")
+torch.save(model, r'D:\Voice\Project\Nepali_Home_Automation_System\Wake_word\saved_model/WWD.pth')
 
 # Evaluation
 model.eval()  # Set model to evaluation mode

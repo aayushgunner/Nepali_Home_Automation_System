@@ -7,7 +7,7 @@ from keras.layers import Dense, Activation, Dropout
 from sklearn.metrics import confusion_matrix, classification_report
 
 
-df = read_pickle("final_audio_data/audio_data.csv")                                         #loads saved csv
+df = read_pickle(r'D:\Voice\Project\Nepali_Home_Automation_System\Wake_word\Final_audio_data/audio_data.csv')                                         #loads saved csv
 
 X = df["feature"].values                                                                        #separating column values in csv
 X = np.concatenate(X, axis=0).reshape(len(X), 40)
@@ -37,7 +37,7 @@ model.compile(
 )
 
 history = model.fit(X_train, y_train, epochs=1000)                                              #training
-model.save("saved_model/WWD.h5")
+model.save(r'D:\Voice\Project\Nepali_Home_Automation_System\Wake_word\saved_model/WWD.h5')
 
 print("Model Score: \n")
 score = model.evaluate(X_test, y_test)

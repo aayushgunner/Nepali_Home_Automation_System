@@ -7,7 +7,7 @@ import whisper
 import time
 
 
-data, fs = read('Affirmation/affirm.mp3')
+data, fs = read('D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/Affirmation/affirm.mp3')
 sd.play(data, fs)
 sd.wait()
 
