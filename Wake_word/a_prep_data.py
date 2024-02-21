@@ -24,9 +24,23 @@ def record_background_save(save_path, n_times=100):                             
         print("Next")
     pass
 
+def command_and_save(save_path, n_times=50):                                        #command recording function
+    input("To record command, press Enter ")
+    for i in range(n_times):
+        fs = 44100                                                                  #sample rate
+        seconds = 3                                                                 #seconds of recording
+        myrecording = sd.rec(int(seconds*fs), samplerate = fs, channels = 2)
+        sd.wait()
+        write(save_path + str(i) + ".wav", fs, myrecording)                         #save recording
+        #input(f"Press to record next or to stop, press ctrl c ({i+1}/{n_times})")
+        print("Next....\n")
+    pass
 
-print("Recording wake word: \n")
-record_audio_and_save("D:\Voice\Project\Audio_data/")
+# print("Recording wake word: \n")
+# record_audio_and_save("D:\Voice\Project\Audio_data/")
 
 # print("Recording background noise\n")
 # record_background_save("D:\Voice\Project\Background_data/")
+
+print("Recording commands\n")
+command_and_save("D:\Voice\Project\TurnOff/")                                       #for making selective asr
