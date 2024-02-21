@@ -33,8 +33,8 @@ while True:
         print("Confidence:", prediction[:, 1])
         i += 1
         remove("prediction.wav")
-        call(['python', 'e_asr.py'])
-        exit()
+        #call(['python', 'e_asr.py'])
+        #exit()
 
 
     else:
