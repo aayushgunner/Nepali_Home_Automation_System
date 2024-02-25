@@ -3,7 +3,7 @@ import librosa
 import math
 import json
 
-FILE_TO_PROCESS = "wehavetodenoised.wav"
+FILE_TO_PROCESS = "sounddevice.wav"
 json_path = "atti.json"
 SAMPLE_RATE = 22050
 DURATION = 3
