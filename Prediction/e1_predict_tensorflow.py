@@ -14,7 +14,7 @@ seconds = 3                                                         #seconds of 
 filename = "prediction.wav"
 class_names = ["Wake Word NOT Detected", "Wake Word Detected"]      #two classes to identify
 
-model = load_model("D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/saved_model/WWD_600.h5")                            #load model
+model = load_model("D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/saved_model/WWD.h5")                            #load model
 
 print("Prediction Started: ")
 i = 0
