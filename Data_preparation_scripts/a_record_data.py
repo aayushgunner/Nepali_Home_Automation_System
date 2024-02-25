@@ -25,8 +25,23 @@ def record_background_save(save_path, n_times=50):                              
     pass
 
 
-print("Recording wake word: \n")
-record_audio_and_save("D:\Voice\Project\Audio_data/")
+def word_record(save_path, n_times=100):                                            #background audio
+    input("To start recording press Enter ")
+    for i in range(n_times):
+        fs = 44100                                                                  #sample rate
+        seconds = 3                                                                 #seconds of recording
+        myrecording = sd.rec(int(seconds*fs), samplerate = fs, channels = 2)
+        sd.wait()
+        write(save_path + str(i) + ".wav", fs, myrecording)                         #save recording
+        print("Next")
+    pass
+
+
+# print("Recording wake word: \n")
+# record_audio_and_save("D:\Voice\Project\Audio_data/")
 
 # print("Recording background noise\n")
 # record_background_save("D:\Voice\Project\Background_data/")
+
+print("Recording word\n")
+word_record(r"D:\Voice\Project\Nepali_Home_Automation_System\Multi_classifier_data\background_normal/")
