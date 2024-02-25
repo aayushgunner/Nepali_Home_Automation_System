@@ -19,7 +19,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 
 model = Sequential([
-    Dense(256, input_shape=X_train[0].shape),
+    Dense(512, input_shape=X_train[0].shape),
     Activation('relu'),
     Dropout(0.5),
     Dense(512),
@@ -37,7 +37,7 @@ model.compile(
 )
 
 history = model.fit(X_train, y_train, epochs=600)                                              #training
-model.save(r'D:\Voice\Project\Nepali_Home_Automation_System\Wake_word\saved_model/WWD_600.h5')
+model.save(r'D:\Voice\Project\Nepali_Home_Automation_System\Wake_word\saved_model/WWD.h5')
 
 print("Model Score: \n")
 score = model.evaluate(X_test, y_test)

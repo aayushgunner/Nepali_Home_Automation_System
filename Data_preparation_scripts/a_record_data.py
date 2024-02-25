@@ -25,7 +25,7 @@ def record_background_save(save_path, n_times=50):                              
     pass
 
 
-def word_record(save_path, n_times=100):                                            #background audio
+def word_record(save_path, n_times=1):                                            #background audio
     input("To start recording press Enter ")
     for i in range(n_times):
         fs = 44100                                                                  #sample rate
@@ -44,4 +44,4 @@ def word_record(save_path, n_times=100):                                        
 # record_background_save("D:\Voice\Project\Background_data/")
 
 print("Recording word\n")
-word_record(r"D:\Voice\Project\Nepali_Home_Automation_System\Multi_classifier_data\background_normal/")
+word_record(r"D:\Voice\Project\Nepali_Home_Automation_System\Data_preparation_scripts/")
