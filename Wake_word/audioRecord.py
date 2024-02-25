@@ -1,7 +1,7 @@
 import pyaudio
 import wave
 
-def record_audio(file_path_template, duration=3, channels=2, sample_rate=44100, chunk_size=1024, num_recordings=10):
+def record_audio(file_path_template, duration=3, channels=2, sample_rate=44100, chunk_size=1024, num_recordings=1):
     p = pyaudio.PyAudio()
 
     for recording_num in range(1, num_recordings + 1):
@@ -36,5 +36,5 @@ def record_audio(file_path_template, duration=3, channels=2, sample_rate=44100, 
 
 if __name__ == "__main__":
     file_path_template = "recorded_audio_{}.wav"
-    record_audio(file_path_template, num_recordings=10)
+    record_audio(file_path_template, num_recordings=1)
 
