@@ -22,9 +22,9 @@ model = Sequential([
     Dense(256, input_shape=X_train[0].shape),
     Activation('relu'),
     Dropout(0.5),
-    Dense(256),
+    Dense(512),
     Activation('relu'),
-    Dropout(0.5),
+    Dropout(0.75),
     Dense(2, activation='softmax')
 ])
 
@@ -36,8 +36,8 @@ model.compile(
     metrics=['accuracy']
 )
 
-history = model.fit(X_train, y_train, epochs=1000)                                              #training
-model.save(r'D:\Voice\Project\Nepali_Home_Automation_System\Wake_word\saved_model/WWD.h5')
+history = model.fit(X_train, y_train, epochs=600)                                              #training
+model.save(r'D:\Voice\Project\Nepali_Home_Automation_System\Wake_word\saved_model/WWD_600.h5')
 
 print("Model Score: \n")
 score = model.evaluate(X_test, y_test)

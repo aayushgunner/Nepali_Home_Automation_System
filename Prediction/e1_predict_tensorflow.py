@@ -6,6 +6,7 @@ from keras.models import load_model
 from subprocess import call
 from sys import exit
 from os import remove
+from soundfile import read
 
 
 fs = 44100                                                          #sample rate
@@ -13,7 +14,7 @@ seconds = 3                                                         #seconds of 
 filename = "prediction.wav"
 class_names = ["Wake Word NOT Detected", "Wake Word Detected"]      #two classes to identify
 
-model = load_model("D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/saved_model/WWD.h5")                            #load model
+model = load_model("D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/saved_model/WWD_600.h5")                            #load model
 
 print("Prediction Started: ")
 i = 0
@@ -33,8 +34,11 @@ while True:
         print("Confidence:", prediction[:, 1])
         i += 1
         remove("prediction.wav")
-        #call(['python', 'D:\Voice\Project\Nepali_Home_Automation_System\Speech_processing/f_whisper_ai.py'])
+        #call(['python', 'D:/Voice/Project/Nepali_Home_Automation_System/Speech_processing/f_whisper_ai.py'])
         #exit()
+        data, fs = read('D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/Affirmation/affirm.mp3')
+        sd.play(data, fs)
+        sd.wait()
 
 
     else:

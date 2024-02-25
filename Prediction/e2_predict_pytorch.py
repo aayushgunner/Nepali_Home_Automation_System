@@ -7,6 +7,7 @@ import torch.nn as nn
 from sys import exit 
 import subprocess
 from os import remove
+from soundfile import read
 
 fs = 44100                                                          # Sample rate
 seconds = 3                                                         # Seconds of data read
@@ -61,8 +62,11 @@ while True:
         print(f"Wake Word Detected for ({i})")
         print("Confidence:", confidence)
         remove("prediction.wav")
-        subprocess.call(['python', 'D:/Voice/Project/Nepali_Home_Automation_System/Speech_processing/f_whisper_ai.py'])
-        exit()
+        data, fs = read('D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/Affirmation/affirm.mp3')
+        sd.play(data, fs)
+        sd.wait()
+        #subprocess.call(['python', 'D:/Voice/Project/Nepali_Home_Automation_System/Speech_processing/f_whisper_ai.py'])
+        #exit()
         
     else:
         print(f"Wake Word NOT Detected")
