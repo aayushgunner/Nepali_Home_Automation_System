@@ -50,6 +50,7 @@ def build_model(input_shape):
     # output layer
     model.add(keras.layers.Dense(3, activation='softmax'))
 
+
     return model
 
 
@@ -87,6 +88,12 @@ if __name__ == "__main__":
     # plot accuracy/error for training and validation
     print("\n Predictions")
     print("{}".format(prediction_labels))
+   
+    if "{}".format(prediction_labels) == "[1]":
+        print("Batti detected")
+
+    elif "{}".format(prediction_labels) == "[2]":
+        print('Dhoka detected')
     # evaluate model on test set
     test_loss, test_acc = model.evaluate(X_test, y_test)
     print('\nTest accuracy:', test_acc)
