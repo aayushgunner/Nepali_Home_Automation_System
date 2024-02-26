@@ -33,13 +33,12 @@ while True:
         print(f"Wake Word Detected for ({i})")
         print("Confidence:", prediction[:, 1])
         i += 1
-        remove("prediction.wav")
-        #call(['python', 'D:/Voice/Project/Nepali_Home_Automation_System/Speech_processing/f_whisper_ai.py'])
-        #exit()
+        # remove("prediction.wav")
+        # call(['python', 'D:/Voice/Project/Nepali_Home_Automation_System/Speech_processing/f_whisper_ai.py'])
+        # exit()
         data, fs = read('D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/Affirmation/affirm.mp3')
         sd.play(data, fs)
         sd.wait()
-
 
     else:
         print(f"Wake Word NOT Detected")
