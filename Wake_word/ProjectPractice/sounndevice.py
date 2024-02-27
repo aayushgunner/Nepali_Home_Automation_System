@@ -9,7 +9,7 @@ def record_audio(file_path, duration=3, samplerate=44100, channels=2):
     sf.write(file_path, audio_data, samplerate)
 
 if __name__ == "__main__":
-    file_path = "sounddevice.wav"
+    file_path = "predict.wav"
     record_audio(file_path, duration=3)
     print(f"Audio recorded and saved to {file_path}")
 

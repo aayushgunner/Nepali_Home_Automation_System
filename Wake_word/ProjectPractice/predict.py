@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import keras
 import json
-DATA_PATH = "last.json"
+DATA_PATH = "all_mfcc_new.json"
 predict_path = "atti.json"
 
 def load_data(data_path):
@@ -20,7 +20,7 @@ def predict_data(predict_path):
         data=json.load(fp)
 
         inputs = np.array(data["mfcc"])
-        inputs = inputs[:,:130, :]
+        #inputs = inputs[:,:13, :]
         return inputs
 def prepare_datasets(test_size, validation_size):
 
@@ -62,38 +62,69 @@ if __name__ == "__main__":
     # create network
     input_shape = (X_train.shape[1], X_train.shape[2]) # 130, 13
 
- #   try:
-    model=keras.models.load_model("last.keras")
-  #      print("loaded pre trained model")
+    model=keras.models.load_model("last_new.keras")
+    print("loaded pre trained model")
 
-#    except(OSError, IOError):
- #       print ("Creating a new model")
-  #      model = build_model(input_shape)
 
-    # compile model
-    #optimiser = keras.optimizers.Adam(learning_rate=0.0001)
-    #model.compile(optimizer=optimiser,
-                #  loss='sparse_categorical_crossentropy',
-                 # metrics=['accuracy'])
+    optimiser = keras.optimizers.Adam(learning_rate=0.0001)
+    model.compile(optimizer=optimiser,
+                  loss='sparse_categorical_crossentropy',
+                  metrics=['accuracy'])
 
-    #model.summary()
+    model.summary()
 
-    # train model
-    #history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=32, epochs=50)
 
     #model.save("last.keras")
     haha=predict_data(predict_path)
     predictions = model.predict(haha)
     prediction_labels= np.argmax(predictions, axis = 1)
-    # plot accuracy/error for training and validation
+
+    confidence = np.max(predictions, axis=1)
+    max_confidence_index = np.argmax(confidence)
+    min_confidence_index = np.argmin(confidence)
+    max_confidence_prediction = prediction_labels[max_confidence_index]
+    min_confidence_prediction = prediction_labels[min_confidence_index]
+    max_confidence = confidence[max_confidence_index]
+    min_confidence = confidence[min_confidence_index]
+
+
+    #plot accuracy/error for training and validation
     print("\n Predictions")
     print("{}".format(prediction_labels))
-   
-    if "{}".format(prediction_labels) == "[1]":
-        print("Batti detected")
 
-    elif "{}".format(prediction_labels) == "[2]":
-        print('Dhoka detected')
-    # evaluate model on test set
+    print ("\n Confidence")
+    print(confidence);
+
+    print("\nPrediction with maximum confidence:")
+    print("Prediction:", max_confidence_prediction)
+    print("Confidence:", max_confidence)
+    
+    if max_confidence_prediction ==2 and max_confidence>0.9999:
+        print("dhoka detected")
+
+    elif max_confidence_prediction ==1 and max_confidence>0.9999:
+        print("batti detected")
+    elif max_confidence_prediction ==2 and max_confidence>0.995 and min_confidence_prediction==2:
+        print("dhoka detected")
+
+    elif max_confidence_prediction == 1 and max_confidence>0.995 and min_confidence_prediction ==1:
+        print("batti detected")
+
+    elif max_confidence_prediction ==2 and max_confidence > 0.99 and min_confidence_prediction == 0 and min_confidence<0.95:
+        print("dhoka detected")
+
+    elif max_confidence_prediction == 1 and max_confidence > 0.99 and min_confidence_prediction ==0 and min_confidence <0.95:
+        print("batti detected")
+     
+    elif max_confidence_prediction ==2 and max_confidence > 0.99 and min_confidence_prediction == 1 and min_confidence<0.95:
+        print("dhoka detected")
+
+    elif max_confidence_prediction ==1 and max_confidence > 0.99 and min_confidence_prediction == 2 and min_confidence<0.95:
+        print("batti detected")
+
+    
+
+ 
+    else: print("Give the command again")
     test_loss, test_acc = model.evaluate(X_test, y_test)
     print('\nTest accuracy:', test_acc)

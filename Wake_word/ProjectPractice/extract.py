@@ -3,11 +3,11 @@ import librosa
 import math
 import json
 DATASET_PATH = "audioSamples"
-json_path = "last.json"
+json_path = "all_mfcc_new.json"
 SAMPLE_RATE = 22050
-DURATION = 30
+DURATION = 3
 SAMPLES_PER_TRACK = SAMPLE_RATE * DURATION
-def save_mfcc(dataset_path , json_path, n_mfcc = 13 , n_fft = 2048, hop_length = 512, num_segments = 5):
+def save_mfcc(dataset_path , json_path, n_mfcc = 13 , n_fft = 2048, hop_length = 512, num_segments = 3):
 
     data = {
         "mapping":[] ,
@@ -45,7 +45,7 @@ def save_mfcc(dataset_path , json_path, n_mfcc = 13 , n_fft = 2048, hop_length =
         json.dump(data , fp, indent= 4)
 
 if __name__ == "__main__":
-    save_mfcc (DATASET_PATH , json_path , num_segments=10)
+    save_mfcc (DATASET_PATH , json_path , num_segments=3)
                   
                     
 

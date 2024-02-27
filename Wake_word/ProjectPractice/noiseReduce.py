@@ -2,7 +2,7 @@ import pywt
 from scipy.io import wavfile
 import numpy as np
 # Specify the path to your audio file
-audio_file = "sounddevice.wav"
+audio_file = "wehaveto.wav"
 
 # Load the audio file
 rate, data = wavfile.read(audio_file)
