@@ -29,7 +29,7 @@ while True:
     mfcc_processed = mean(mfcc.T, axis=0)                        #processed mfcc
 
     prediction = model.predict(expand_dims(mfcc_processed, axis=0))
-    if prediction[:, 1] > 0.99:
+    if prediction[:, 1] > 0.97:
         print(f"Wake Word Detected for ({i})")
         print("Confidence:", prediction[:, 1])
         i += 1
