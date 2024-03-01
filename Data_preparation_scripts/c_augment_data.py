@@ -1,6 +1,6 @@
 from audiomentations import Compose, AddGaussianNoise, PitchShift, HighPassFilter, ClippingDistortion, LowPassFilter
-import librosa
-import soundfile as sf
+from librosa import load
+from soundfile import write
 from os import listdir 
 
 
@@ -14,9 +14,9 @@ def augmenter(path, dest):
             ClippingDistortion(min_percentile_threshold=2, max_percentile_threshold=7, p=0.5),
             HighPassFilter(min_cutoff_freq=600, max_cutoff_freq=3400, p=0.8)
         ])
-        signal, sample_rate = librosa.load(path + files)
+        signal, sample_rate = load(path + files)
         augmented_signal = augment(signal, sample_rate)
-        sf.write(dest + str(i) + "_newaug.wav", augmented_signal, sample_rate)
+        write(dest + str(i) + "_newaug.wav", augmented_signal, sample_rate)
         i = i + 1
 
 

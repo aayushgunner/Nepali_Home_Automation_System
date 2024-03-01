@@ -1,4 +1,4 @@
-import sounddevice as sd                                                            #record sound and make numpy array
+from sounddevice import wait, rec                                                            #record sound and make numpy array
 from scipy.io.wavfile import write                                                  #take array and save as wav audio file
 
 def record_audio_and_save(save_path, n_times= 50):                                  #wakeword recording function
@@ -6,8 +6,8 @@ def record_audio_and_save(save_path, n_times= 50):                              
     for i in range(n_times):
         fs = 44100                                                                  #sample rate
         seconds = 3                                                                 #seconds of recording
-        myrecording = sd.rec(int(seconds*fs), samplerate = fs, channels = 2)
-        sd.wait()
+        myrecording = rec(int(seconds*fs), samplerate = fs, channels = 2)
+        wait()
         write(save_path + str(i) + ".wav", fs, myrecording)                         #save recording
         #input(f"Press to record next or to stop, press ctrl c ({i+1}/{n_times})")
         print("Next....\n")
@@ -18,8 +18,8 @@ def record_background_save(save_path, n_times=50):                              
     for i in range(n_times):
         fs = 44100                                                                  #sample rate
         seconds = 3                                                                 #seconds of recording
-        myrecording = sd.rec(int(seconds*fs), samplerate = fs, channels = 2)
-        sd.wait()
+        myrecording = rec(int(seconds*fs), samplerate = fs, channels = 2)
+        wait()
         write(save_path + str(i) + ".wav", fs, myrecording)                         #save recording
         print("Next")
     pass
@@ -30,8 +30,8 @@ def word_record(save_path, n_times=1):                                          
     for i in range(n_times):
         fs = 44100                                                                  #sample rate
         seconds = 3                                                                 #seconds of recording
-        myrecording = sd.rec(int(seconds*fs), samplerate = fs, channels = 2)
-        sd.wait()
+        myrecording = rec(int(seconds*fs), samplerate = fs, channels = 2)
+        wait()
         write(save_path + str(i) + ".wav", fs, myrecording)                         #save recording
         print("Next")
     pass

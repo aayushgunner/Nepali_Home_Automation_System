@@ -1,7 +1,7 @@
-import sounddevice as sd
+from sounddevice import rec, wait, play
 from scipy.io.wavfile import write
-import librosa
-import numpy as np
+from librosa import load, feature
+from numpy import mean, expand_dims
 from keras.models import load_model
 from subprocess import call
 from sys import exit
@@ -20,25 +20,26 @@ print("Prediction Started: ")
 i = 0
 while True:
     print("Say Now: ")                                              #prompts listener
-    myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
-    sd.wait()
+    myrecording = rec(int(seconds * fs), samplerate=fs, channels=2)
+    wait()
     write(filename, fs, myrecording)
 
-    audio, sample_rate = librosa.load(filename)                     #numpy array from audio sample
-    mfcc = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40) #mfcc value of input
-    mfcc_processed = np.mean(mfcc.T, axis=0)                        #processed mfcc
+    audio, sample_rate = load(filename)                     #numpy array from audio sample
+    mfcc = feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40) #mfcc value of input
+    mfcc_processed = mean(mfcc.T, axis=0)                        #processed mfcc
 
-    prediction = model.predict(np.expand_dims(mfcc_processed, axis=0))
+    prediction = model.predict(expand_dims(mfcc_processed, axis=0))
     if prediction[:, 1] > 0.99:
         print(f"Wake Word Detected for ({i})")
         print("Confidence:", prediction[:, 1])
         i += 1
-        # remove("prediction.wav")
+        
+        remove("prediction.wav")
         # call(['python', 'D:/Voice/Project/Nepali_Home_Automation_System/Speech_processing/f_whisper_ai.py'])
         # exit()
         data, fs = read('D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/Affirmation/affirm.mp3')
-        sd.play(data, fs)
-        sd.wait()
+        play(data, fs)
+        wait()
 
     else:
         print(f"Wake Word NOT Detected")

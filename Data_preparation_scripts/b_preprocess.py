@@ -1,10 +1,8 @@
 #prepare csv by filtering 1 and 0 cases
 
 from os import listdir
-import librosa
-import librosa.display
-import matplotlib.pyplot as plt 
-import numpy as np 
+from librosa import load, feature
+from numpy import mean 
 from pandas import DataFrame 
 
 all_data = []
@@ -16,9 +14,9 @@ data_path_dict = {
 
 for class_label, list_of_files in data_path_dict.items():
     for single_file in list_of_files:
-        data, sample_rate = librosa.load(single_file)                                           #input audio file, returns numpy arra, sample rate
-        mfccs = librosa.feature.mfcc(y=data, sr = sample_rate, n_mfcc=40)                       #calculate mfcc val
-        mfcc_processed = np.mean(mfccs.T, axis=0)                                               #process mfcc by axis reduction
+        data, sample_rate = load(single_file)                                           #input audio file, returns numpy arra, sample rate
+        mfccs = feature.mfcc(y=data, sr = sample_rate, n_mfcc=40)                       #calculate mfcc val
+        mfcc_processed = mean(mfccs.T, axis=0)                                               #process mfcc by axis reduction
         all_data.append([mfcc_processed, class_label])                                          #append to list
     print(f"Info: Successful preprocess {class_label}")
 
