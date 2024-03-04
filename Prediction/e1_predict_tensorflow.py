@@ -9,6 +9,7 @@ from os import remove
 from soundfile import read
 
 
+
 fs = 44100                                                          #sample rate
 seconds = 3                                                         #seconds of data read
 filename = "prediction.wav"
@@ -32,11 +33,8 @@ while True:
     if (prediction[:, 1] > 0.98 or prediction[:, 0] < 0.03) :
         print(f"Wake Word Detected for ({i})")
         print("Confidence:", prediction[:, 1])
-        i += 1
-        
+        i += 1        
         remove("prediction.wav")
-        # call(['python', 'D:/Voice/Project/Nepali_Home_Automation_System/Speech_processing/f_whisper_ai.py'])
-        # exit()
         data, fs = read('../Wake_word/Affirmation/affirm.mp3')
         play(data, fs)
         wait()
