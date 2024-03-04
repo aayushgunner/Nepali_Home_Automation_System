@@ -29,7 +29,7 @@ while True:
     mfcc_processed = mean(mfcc.T, axis=0)                        #processed mfcc
 
     prediction = model.predict(expand_dims(mfcc_processed, axis=0))
-    if prediction[:, 1] > 0.97:
+    if (prediction[:, 1] > 0.98 or prediction[:, 0] < 0.03) :
         print(f"Wake Word Detected for ({i})")
         print("Confidence:", prediction[:, 1])
         i += 1
@@ -37,7 +37,7 @@ while True:
         remove("prediction.wav")
         # call(['python', 'D:/Voice/Project/Nepali_Home_Automation_System/Speech_processing/f_whisper_ai.py'])
         # exit()
-        data, fs = read('D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/Affirmation/affirm.mp3')
+        data, fs = read('../Wake_word/Affirmation/affirm.mp3')
         play(data, fs)
         wait()
 

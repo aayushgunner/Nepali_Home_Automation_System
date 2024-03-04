@@ -20,7 +20,7 @@ def record_background_save(save_path, n_times=50):                              
         seconds = 3                                                                 #seconds of recording
         myrecording = rec(int(seconds*fs), samplerate = fs, channels = 2)
         wait()
-        write(save_path + str(i) + ".wav", fs, myrecording)                         #save recording
+        write(save_path + str(i) + "latest.wav", fs, myrecording)                         #save recording
         print("Next")
     pass
 
@@ -40,8 +40,8 @@ def word_record(save_path, n_times=1):                                          
 # print("Recording wake word: \n")
 # record_audio_and_save("D:\Voice\Project\Audio_data/")
 
-# print("Recording background noise\n")
-# record_background_save("D:\Voice\Project\Background_data/")
+print("Recording background noise\n")
+record_background_save("D:\Voice\Project\Background_data/")
 
-print("Recording word\n")
-word_record(r"D:\Voice\Project\Nepali_Home_Automation_System\Data_preparation_scripts/")
+# print("Recording word\n")
+# word_record(r"D:\Voice\Project\Nepali_Home_Automation_System\Data_preparation_scripts/")
