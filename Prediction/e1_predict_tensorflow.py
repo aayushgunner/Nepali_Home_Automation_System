@@ -8,14 +8,12 @@ from sys import exit
 from os import remove
 from soundfile import read
 
-
-
 fs = 44100                                                          #sample rate
 seconds = 3                                                         #seconds of data read
 filename = "prediction.wav"
 class_names = ["Wake Word NOT Detected", "Wake Word Detected"]      #two classes to identify
 
-model = load_model("D:/Voice/Project/Nepali_Home_Automation_System/Wake_word/saved_model/WWD.h5")                            #load model
+model = load_model("../Wake_word/saved_model/WWD.h5")                            #load model
 
 print("Prediction Started: ")
 i = 0
