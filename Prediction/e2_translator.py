@@ -1,7 +1,7 @@
 from openai import OpenAI
 from sounddevice import rec, wait, play
 from scipy.io.wavfile import write
-
+from soundfile import read
 
 OpenAI.api_key = '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'
 client = OpenAI(api_key= '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')
@@ -12,7 +12,10 @@ seconds = 3                                                         #seconds of 
 filename = "command.wav"
 class_names = ["Wake Word NOT Detected", "Wake Word Detected"]
 
-print("Say Now: ")                                              #prompts listener
+print("Say Now: ")
+data, fs = read('../Wake_word/Affirmation/affirm_2.mp3')
+play(data, fs)
+wait()                                              #prompts listener
 myrecording = rec(int(seconds * fs), samplerate=fs, channels=2)
 wait()
 write(filename, fs, myrecording)
