@@ -1,18 +1,57 @@
+import tkinter as tk
 from sounddevice import rec, wait, play
 from scipy.io.wavfile import write
 from librosa import load, feature
 from numpy import mean, expand_dims
 from keras.models import load_model
 from subprocess import call
-from sys import exit
 from os import remove
 from soundfile import read
 from openai import OpenAI
+import threading
 
 client = OpenAI(api_key= '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')
 fs = 44100                                                          #sample rate
 seconds = 3                                                         #seconds of data read
 filename = "prediction.wav"
+door_close = door_open = batti_off = batti_off = "None"
+
+class GUI(tk.Tk):
+    def __init__(self):
+        super().__init__()
+
+        self.title("Wake Word Detection")
+
+        self.label = tk.Label(self, text="Click the button to start detecting the wake word.")
+        self.label.pack(padx=20, pady=20)
+        
+        self.button_first = tk.Button(self, text="Start Detection", command=self.start_detection)
+        self.button_first.pack(padx=5, pady=5)
+
+        self.button_second = tk.Button(self, text="Direct Command", command=self.end_detection)
+        self.button_second.pack(padx=5, pady=5)
+
+        self.label.config(text="Click the button to start detecting the wake word.")
+
+        self.geometry("300x300")
+
+    def start_detection(self):
+        data, fs = read('../Wake_word/Affirmation/affirm.mp3')
+        play(data, fs)
+        wait()
+        self.label.config(text="Listening...")
+
+        # Call your function to detect the wake word
+        wake_word()
+        self.label.config(text="Wake word detected. Listening for command...")
+        threading.Thread(target=asm).start()
+        return
+        
+
+    def end_detection(self):        
+        threading.Thread(target=asm).start()
+        self.label.config(text = "Listening for command...")
+        return
 
 def wake_word():
     class_names = ["Wake Word NOT Detected", "Wake Word Detected"]      #two classes to identify
@@ -39,8 +78,8 @@ def wake_word():
             #play(data, fs)
             #wait()
             #call(['python', 'e2_translator.py'])
-            asm()
-            wake_word()
+            return
+            #break;
 
         else:
             #print(f"Wake Word NOT Detected")
@@ -50,7 +89,6 @@ def wake_word():
 
 def asm(): 
     door_close = door_open = batti_off = batti_off = "None"
-    night = 0
     fs = 44100                                                          #sample rate
     seconds = 3                                                         #seconds of data read
     filename = "command.wav"
@@ -85,7 +123,6 @@ def asm():
 
     if ("night" in transcription):
         print("\nGood Night")
-        night = 1
         door_close = True
         lights_off = True
 
@@ -115,11 +152,10 @@ def asm():
         print("Door Closed")
     elif (door_open):
         print("Door Opened")    
+    
 
-    if (night == 1):
-        exit()
     return
 
-
 if __name__ == "__main__":
-    wake_word()
+    app = GUI()
+    app.mainloop()
