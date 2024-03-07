@@ -30,10 +30,16 @@ class GUI(tk.Tk):
 
         self.button_second = tk.Button(self, text="Direct Command", command=self.end_detection)
         self.button_second.pack(padx=5, pady=5)
+        
+        self.button_third = tk.Button(self, text="Turn on lights", command=self.change_state)
+        self.button_third.pack(padx=5, pady=5)
 
         self.label.config(text="Click the button to start detecting the wake word.")
 
+        
+
         self.geometry("300x300")
+        self.after(1, self.update())
 
     def start_detection(self):
         data, fs = read('../Wake_word/Affirmation/affirm.mp3')
@@ -52,6 +58,15 @@ class GUI(tk.Tk):
         threading.Thread(target=asm).start()
         self.label.config(text = "Listening for command...")
         return
+    
+    def change_state(self):
+        self.label.config(text = "Lights on")
+        self.button_third.setvar("Turn off")
+        return
+        
+    
+    def update(self):
+        return 
 
 def wake_word():
     class_names = ["Wake Word NOT Detected", "Wake Word Detected"]      #two classes to identify
