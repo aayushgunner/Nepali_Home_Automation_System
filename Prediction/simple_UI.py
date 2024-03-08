@@ -10,11 +10,12 @@ from soundfile import read
 from openai import OpenAI
 import threading
 
+
+door_close = door_open = batti_on = batti_off = "None"
 client = OpenAI(api_key= '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')
 fs = 44100                                                          #sample rate
 seconds = 3                                                         #seconds of data read
 filename = "prediction.wav"
-door_close = door_open = batti_off = batti_off = "None"
 
 class GUI(tk.Tk):
     def __init__(self):
@@ -103,7 +104,7 @@ def wake_word():
 
 
 def asm(): 
-    door_close = door_open = batti_off = batti_off = "None"
+    global door_close, door_open, batti_on, batti_off 
     fs = 44100                                                          #sample rate
     seconds = 3                                                         #seconds of data read
     filename = "command.wav"
@@ -139,7 +140,7 @@ def asm():
     if ("night" in transcription):
         print("\nGood Night")
         door_close = True
-        lights_off = True
+        batti_off = True
 
     if any(substring in transcription for substring in substrings_lights):
         if any(further in transcription for further in lights_on):

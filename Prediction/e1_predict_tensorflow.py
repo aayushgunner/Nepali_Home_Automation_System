@@ -9,6 +9,7 @@ from os import remove
 from soundfile import read
 from openai import OpenAI
 
+door_close = door_open = batti_on = batti_off = "None"
 client = OpenAI(api_key= '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')
 fs = 44100                                                          #sample rate
 seconds = 3                                                         #seconds of data read
@@ -49,7 +50,7 @@ def wake_word():
 
 
 def asm(): 
-    door_close = door_open = batti_off = batti_off = "None"
+    global door_close, door_open, batti_on, batti_off
     night = 0
     fs = 44100                                                          #sample rate
     seconds = 3                                                         #seconds of data read
@@ -72,14 +73,14 @@ def asm():
     )
     lower = transcription.text
     transcription = lower.lower()
-   
+    print(transcription)
     
-    substrings_lights = ["batti", "vati", "bati", "batii", "bhatti", "bhati"]
+    substrings_lights = ["batti", "vati", "bati", "batii", "bhatti", "bhati", "but"]
     lights_on = ["bala", "vala", "valor", "wala", "on", "baala", "bhala"]
     lights_off = ["nibhau", "nibau", "banda", "wanda", "off", "vanda", "bhanda", "nibha"]
 
-    substrings_doors = ["dhoka", "doka", "dhukha", "dhuka", "duka", "coca", "dukkha", "dhooka", "duca"]
-    door_open = ["khola", "kola", "koala", "cola", "open", "kholo", "khula", "khunna"]
+    substrings_doors = ["dhoka", "doka", "dhukha", "dhuka", "duka", "coca", "dukkha", "dhooka", "duca", "dhūkā"]
+    door_open = ["khola", "kola", "koala", "cola", "open", "kholo", "khula", "khunna", "khūlā", "khūlā"]
     door_close = ["lagau", "laga", "laaga", "lagaa", "close", "laghau"]
 
 
@@ -87,7 +88,7 @@ def asm():
         print("\nGood Night")
         night = 1
         door_close = True
-        lights_off = True
+        batti_off = True
 
     if any(substring in transcription for substring in substrings_lights):
         if any(further in transcription for further in lights_on):
