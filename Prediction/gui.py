@@ -1,32 +1,23 @@
-import time
-import threading
 import tkinter as tk
 from tkinter import ttk, font
-
-# Ref: https://github.com/rdbende/Sun-Valley-ttk-theme
-# Install: pip install sv-ttk
 import sv_ttk
-
-from wifi_communicator import WiFiCommunicator, OutMessage
-
 from sounddevice import rec, wait, play
 from scipy.io.wavfile import write
 from librosa import load, feature
 from numpy import mean, expand_dims
 from keras.models import load_model
-from subprocess import call
 from os import remove
 from soundfile import read
 from openai import OpenAI
-import threading
 
+from wifi_communicator import WiFiCommunicator, OutMessage
 
 door_close = door_open = batti_on = batti_off = "None"
 client = OpenAI(api_key= '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')
 fs = 44100                                                          #sample rate
 seconds = 3                                                         #seconds of data read
 filename = "prediction.wav"
-door_close = door_open = batti_off = batti_off = "None"
+door_close = door_open = batti_on = batti_off = "None"
 
 
 class GUI(tk.Tk):
@@ -38,6 +29,7 @@ class GUI(tk.Tk):
     ON_COLOR = 'red'
     OFF_COLOR = 'Green'
     ON_lights = "OFF"
+    OPEN_doors = "OFF"
 
     def __init__(self, communicator: WiFiCommunicator, *, title: str = 'Test GUI', min_size: 'tuple[int, int]' = (300, 100)) -> None:
         '''
@@ -114,6 +106,7 @@ class GUI(tk.Tk):
         self.__asm()
         
         led_on = self.ON_lights
+        doors_open = self.OPEN_doors
         # Update the button text
         #self._btn_state_txt.set(self.ON_BUTTON_STR if led_on else self.OFF_BUTTON_STR)
         self._on_off_btn['bg'] = self.ON_COLOR if led_on else self.OFF_COLOR
@@ -122,6 +115,10 @@ class GUI(tk.Tk):
         # (there must be a defined protocol for what each command means)
         msg = OutMessage(data='f' if led_on else 'n')
         self._communicator.send_message(msg)
+        msg = OutMessage(data = 'o' if doors_open else 'c')
+        self._communicator.send_message(msg)
+
+
 
     def __wake_word(self):
         class_names = ["Wake Word NOT Detected", "Wake Word Detected"]      #two classes to identify
@@ -177,22 +174,24 @@ class GUI(tk.Tk):
         )
         lower = transcription.text
         transcription = lower.lower()
+        print(transcription)
     
         
-        substrings_lights = ["batti", "vati", "bati", "batii", "bhatti", "bhati", "but"]
-        lights_on = ["bala", "vala", "valor", "wala", "on", "baala", "bhala"]
-        lights_off = ["nibhau", "nibau", "banda", "wanda", "off", "vanda", "bhanda", "nibha"]
+        substrings_lights = ["batti", "vati", "bati", "batii", "bhatti", "bhati", "but", "bathi", "batthi", "बति"]
+        lights_on = ["bala", "vala", "valor", "wala", "on", "baala", "bhala", "balla", "बादः"]
+        lights_off = ["nibhau", "nibau", "banda", "wanda", "off", "vanda", "bhanda", "nibha", "mebow", "nibbhau"]
 
-        substrings_doors = ["dhoka", "doka", "dhukha", "dhuka", "duka", "coca", "dukkha", "dhooka", "duca", "dhūkā"]
-        door_open = ["khola", "kola", "koala", "cola", "open", "kholo", "khula", "khunna", "khūlā", "khūlā"]
-        door_close = ["lagau", "laga", "laaga", "lagaa", "close", "laghau"]
+        substrings_doors = ["dhoka", "doka", "dhukha", "dhuka", "duka", "coca", "dukkha", "dhooka", "duca", "dhūkā", "dooka"]
+        door_open = ["khola", "kola", "koala", "cola", "open", "kholo", "khula", "khunna", "khūlā", "khūlā", "khulo"]
+        door_close = ["lagau", "laga", "laaga", "lagaa", "close", "laghau", "banda", "bundhu", "bunda", "baanda", "band", "logo", "logau", "bandha", "bondoo", "bondo"]
 
 
         if ("night" in transcription):
             print("\nGood Night")
             door_close = True
-            batti_on = True
+            batti_off = True
             self.ON_lights = 0
+            self.OPEN_doors = 0
 
         if any(substring in transcription for substring in substrings_lights):
             if any(further in transcription for further in lights_on):
@@ -220,8 +219,10 @@ class GUI(tk.Tk):
 
         if (door_close):
             print("Door Closed")
+            self.OPEN_doors = 0
         elif (door_open):
-            print("Door Opened")    
+            print("Door Opened")
+            self.OPEN_doors = 1    
         
 
         return
