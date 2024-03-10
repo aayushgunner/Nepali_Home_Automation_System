@@ -8,18 +8,19 @@ from sys import exit
 from os import remove
 from soundfile import read
 from openai import OpenAI
+from wifi_communicator import WiFiCommunicator, OutMessage
 
-dhoka_close = dhoka_open = batti_on = batti_off = "None"
+dhoka_close = dhoka_open = batti_on = batti_off = night = "None"
 client = OpenAI(api_key= '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')
 fs = 44100                                                          #sample rate
 seconds = 3                                                         #seconds of data read
 filename = "prediction.wav"
+i = 0
 
-def wake_word():
+def wake_word(communicator: WiFiCommunicator ):
+    global i
     class_names = ["Wake Word NOT Detected", "Wake Word Detected"]      #two classes to identify
-
     model = load_model("../Wake_word/saved_model/WWD.h5")                            #load model
-
     print("Wake word listener ")
     while True:
         print("Scanning...")                                              #prompts listener
@@ -41,7 +42,14 @@ def wake_word():
             #wait()
             #call(['python', 'e2_translator.py'])
             asm()
-            wake_word()
+            msg = OutMessage(data='f' if batti_off else 'n')
+            communicator.send_message(msg)
+            msg = OutMessage(data = 'c' if dhoka_close else 'o')
+            communicator.send_message(msg)     
+            if (night == 1):
+                exit()   
+            
+            wake_word(communicator=communicator)
 
         else:
             #print(f"Wake Word NOT Detected")
@@ -50,7 +58,7 @@ def wake_word():
 
 
 def asm(): 
-    global dhoka_close, dhoka_open, batti_on, batti_off
+    global dhoka_close, dhoka_open, batti_on, batti_off, night
     night = 0
     fs = 44100                                                          #sample rate
     seconds = 3                                                         #seconds of data read
@@ -75,20 +83,22 @@ def asm():
     transcription = lower.lower()
     print(transcription)
     
-    substrings_lights = ["batti", "vati", "bati", "batii", "bhatti", "bhati", "but", "bathi", "batthi", "बति"]
-    lights_on = ["bala", "vala", "valor", "wala", "on", "baala", "bhala", "balla", "बादः"]
-    lights_off = ["nibhau", "nibau", "banda", "wanda", "off", "vanda", "bhanda", "nibha", "mebow", "nibbhau"]
+    substrings_lights = ["batti", "vati", "bati", "batii", "bhatti", "bhati", "but", "light", "lights", "batthi", "बति", "bath", 'बत्ति', 'batii' ]
+    lights_on = ["bala", "vala", "valor", "wala", "on", "baala", "bhala", "bahla", "turn on", "balla", "बादः"]
+    lights_off = ["nibhau", "nibau", "banda", "wanda", "off", "vanda", "bhanda", "nibha", "turn off", "mebow", "nibbhau", 'निबाव', 'mibaaw']
 
-    substrings_doors = ["dhoka", "doka", "dhukha", "dhuka", "duka", "coca", "dukkha", "dhooka", "duca", "dhūkā", "dooka"]
-    door_open = ["khola", "kola", "koala", "cola", "open", "kholo", "khula", "khunna", "khūlā", "khūlā", "khulo"]
-    door_close = ["lagau", "laga", "laaga", "lagaa", "close", "laghau", "banda", "bundhu", "bunda", "baanda", "band", "logo", "logau", "bandha", "bondoo", "bondo"]
+    substrings_doors = ["dhoka", "doka", "dhukha", "dhuka", "duka", "coca", "dukkha", "dhooka", "duca", "dhūkā", "dooka", "दुखा", "धुका", "lid", "dhūkha"]
+    door_open = ["khola", "kola", "koala", "cola", "open", "kholo", "khula", "khunna", "khūlā", "khūlā", "kula", "khoola", "kholau", "khoolau"]
+    door_close = ["lagau", "laga","loga", "laaga", "lagaa", "close", "laghau", "बन्द" , "ladau", "banda", "bundhu", "bunda", "baanda", "band", "logo", "logau", "bandha", "bondoo", "bondo", "bondho", "bonda"]
 
 
     if ("night" in transcription):
         print("\nGood Night")
         night = 1
+        dhoka_open = False
         dhoka_close = True
         batti_off = True
+        batti_on = False
 
     if any(substring in transcription for substring in substrings_lights):
         if any(further in transcription for further in lights_on):
@@ -117,10 +127,13 @@ def asm():
     elif (dhoka_open):
         print("Door Opened")    
 
-    if (night == 1):
-        exit()
     return
 
 
 if __name__ == "__main__":
-    wake_word()
+    communicator = WiFiCommunicator(max_buffer_sz=128)
+    msg = OutMessage(data='f')
+    communicator.send_message(msg)
+    msg = OutMessage(data = 'c')
+    communicator.send_message(msg)  
+    wake_word(communicator)

@@ -17,7 +17,6 @@ client = OpenAI(api_key= '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')
 fs = 44100                                                          #sample rate
 seconds = 3                                                         #seconds of data read
 filename = "prediction.wav"
-door_close = door_open = batti_on = batti_off = "None"
 
 
 class GUI(tk.Tk):
@@ -177,14 +176,13 @@ class GUI(tk.Tk):
         print(transcription)
     
         
-        substrings_lights = ["batti", "vati", "bati", "batii", "bhatti", "bhati", "but", "bathi", "batthi", "बति"]
-        lights_on = ["bala", "vala", "valor", "wala", "on", "baala", "bhala", "balla", "बादः"]
-        lights_off = ["nibhau", "nibau", "banda", "wanda", "off", "vanda", "bhanda", "nibha", "mebow", "nibbhau"]
+        substrings_lights = ["batti", "vati", "bati", "batii", "bhatti", "bhati", "but", "light", "lights", "batthi", "बति"]
+        lights_on = ["bala", "vala", "valor", "wala", "on", "baala", "bhala", "bahla", "turn on", "balla", "बादः"]
+        lights_off = ["nibhau", "nibau", "banda", "wanda", "off", "vanda", "bhanda", "nibha", "turn off", "mebow", "nibbhau"]
 
-        substrings_doors = ["dhoka", "doka", "dhukha", "dhuka", "duka", "coca", "dukkha", "dhooka", "duca", "dhūkā", "dooka"]
-        door_open = ["khola", "kola", "koala", "cola", "open", "kholo", "khula", "khunna", "khūlā", "khūlā", "khulo"]
-        door_close = ["lagau", "laga", "laaga", "lagaa", "close", "laghau", "banda", "bundhu", "bunda", "baanda", "band", "logo", "logau", "bandha", "bondoo", "bondo"]
-
+        substrings_doors = ["dhoka", "doka", "dhukha", "dhuka", "duka", "coca", "dukkha", "dhooka", "duca", "dhūkā", "dooka", "दुखा", "धुका", "lid", "dhūkha"]
+        door_open = ["khola", "kola", "koala", "cola", "open", "kholo", "khula", "khunna", "khūlā", "khūlā", "kula", "khoola", "kholau", "khoolau"]
+        door_close = ["lagau", "laga", "laaga", "lagaa", "close", "laghau", "बन्द" , "ladau", "banda", "bundhu", "bunda", "baanda", "band", "logo", "logau", "bandha", "bondoo", "bondo"]
 
         if ("night" in transcription):
             print("\nGood Night")

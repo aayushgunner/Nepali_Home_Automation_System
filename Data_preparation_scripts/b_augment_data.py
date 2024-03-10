@@ -21,6 +21,6 @@ def augmenter(path, dest):
 
 
 
-file_path = "D:\Voice\Project\Background_data/"
-dest = "D:\Voice\Project\Background_data/"
+file_path = "..\..\Background_data/"
+dest = "..\..\Background_data/"
 augmenter(file_path, dest)
