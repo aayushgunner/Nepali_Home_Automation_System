@@ -5,10 +5,12 @@ from numpy import mean, expand_dims
 from keras.models import load_model
 from subprocess import call
 from sys import exit
-from os import remove
+import os 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 from soundfile import read
 from openai import OpenAI
 from wifi_communicator import WiFiCommunicator, OutMessage
+
 
 dhoka_close = dhoka_open = batti_on = batti_off = night = "None"
 client = OpenAI(api_key= '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')
@@ -36,7 +38,7 @@ def wake_word(communicator: WiFiCommunicator ):
         if (prediction[:, 1] > 0.98 or prediction[:, 0] < 0.03) :
             print(f"Wake Word Detected")
             print("Confidence:", prediction[:, 1])        
-            remove("prediction.wav")
+            os.remove("prediction.wav")
             #data, fs = read('../Wake_word/Affirmation/affirm.mp3')
             #play(data, fs)
             #wait()
@@ -54,7 +56,7 @@ def wake_word(communicator: WiFiCommunicator ):
         else:
             #print(f"Wake Word NOT Detected")
             #print("Confidence:", prediction[:, 0])
-            remove("prediction.wav")
+            os.remove("prediction.wav")
 
 
 def asm(): 
