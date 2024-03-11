@@ -1,12 +1,12 @@
+import os 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 from sounddevice import rec, wait, play
 from scipy.io.wavfile import write
 from librosa import load, feature
 from numpy import mean, expand_dims
 from keras.models import load_model
-from subprocess import call
 from sys import exit
-import os 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+import os
 from soundfile import read
 from openai import OpenAI
 from wifi_communicator import WiFiCommunicator, OutMessage
@@ -14,25 +14,25 @@ from wifi_communicator import WiFiCommunicator, OutMessage
 
 dhoka_close = dhoka_open = batti_on = batti_off = night = "None"
 client = OpenAI(api_key= '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')
-fs = 44100                                                          #sample rate
-seconds = 3                                                         #seconds of data read
+fs = 44100                                                          
+seconds = 3                                                         
 filename = "prediction.wav"
 i = 0
 
 def wake_word(communicator: WiFiCommunicator ):
     global i
-    class_names = ["Wake Word NOT Detected", "Wake Word Detected"]      #two classes to identify
-    model = load_model("../Wake_word/saved_model/WWD.h5")                            #load model
+    class_names = ["Wake Word NOT Detected", "Wake Word Detected"]      
+    model = load_model("../Wake_word/saved_model/WWD.h5")
     print("Wake word listener ")
     while True:
-        print("Scanning...")                                              #prompts listener
+        print("Scanning...")                                              
         myrecording = rec(int(seconds * fs), samplerate=fs, channels=2)
         wait()
         write(filename, fs, myrecording)
 
-        audio, sample_rate = load(filename)                     #numpy array from audio sample
-        mfcc = feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40) #mfcc value of input
-        mfcc_processed = mean(mfcc.T, axis=0)                        #processed mfcc
+        audio, sample_rate = load(filename)                     
+        mfcc = feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40) 
+        mfcc_processed = mean(mfcc.T, axis=0)                        
 
         prediction = model.predict(expand_dims(mfcc_processed, axis=0))
         if (prediction[:, 1] > 0.98 or prediction[:, 0] < 0.03) :
@@ -62,14 +62,14 @@ def wake_word(communicator: WiFiCommunicator ):
 def asm(): 
     global dhoka_close, dhoka_open, batti_on, batti_off, night
     night = 0
-    fs = 44100                                                          #sample rate
-    seconds = 3                                                         #seconds of data read
+    fs = 44100                                                          
+    seconds = 3                                                         
     filename = "command.wav"
     class_names = ["Wake Word NOT Detected", "Wake Word Detected"]
 
     data, fs = read('../Wake_word/Affirmation/affirm_2.mp3')
     play(data, fs)
-    wait()                                              #prompts listener
+    wait()                                              
     print("\n \nProvide Command")
     myrecording = rec(int(seconds * fs), samplerate=fs, channels=2)
     wait()
