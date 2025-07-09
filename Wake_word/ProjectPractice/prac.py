@@ -2,7 +2,7 @@ import os
 import librosa
 import math
 import json
-
+import matplotlib.pyplot as plt
 FILE_TO_PROCESS = "wehaveto.wav"
 json_path = "atti.json"
 SAMPLE_RATE = 22050
@@ -31,6 +31,14 @@ def save_mfcc(file_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, num_s
         # Ensure that the length of mfcc matches the expected_num_mfcc_vectors_per_segment
         if len(mfcc) == expected_num_mfcc_vectors_per_segment:
             data["mfcc"].append(mfcc.tolist())
+            plt.figure(figsize=(10, 6))
+            librosa.display.specshow(mfcc.T, sr=sr, hop_length=hop_length, x_axis='time')
+            plt.colorbar(format='%+2.0f dB')
+            plt.title('MFCC', fontsize=20)  # Increase title font size
+            plt.xlabel('Time', fontsize=16)  # Increase x-axis label font size
+            plt.ylabel('MFCC Coefficients', fontsize=16)
+            plt.show()
+
 
     with open(json_path, "w") as fp:
         json.dump(data, fp, indent=4)

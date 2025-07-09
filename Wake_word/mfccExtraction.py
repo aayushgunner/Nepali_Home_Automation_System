@@ -1,4 +1,3 @@
-
 import os
 import librosa
 import numpy as np
@@ -17,9 +16,9 @@ def extract_mfcc_from_folder(folder_path, n_fft=2048, hop_length=512, n_mfcc=13)
 
 # Define paths to the folders containing audio files
 folder_paths = [
-    "/home/aayushgunner/aayush/coding/Nepali_Home_Automation_System/Wake_word/audioSamples/NoiseReduced",
-    "/home/aayushgunner/aayush/coding/Nepali_Home_Automation_System/Wake_word/audioSamples/Background_data"
-]
+        "/home/aayushgunner/aayush/coding/Nepali_Home_Automation_System/Wake_word/audioSamples/NoiseReduced",
+        "/home/aayushgunner/aayush/coding/Nepali_Home_Automation_System/Wake_word/audioSamples/Background_data"
+        ]
 
 # Dictionary to store MFCC features for each folder
 mfcc_data = {"mapping": [], "mfcc": []}
@@ -37,7 +36,7 @@ with open(combined_json_file, 'wb') as f:
     pickle.dump(mfcc_data, f)
 
 with open (combined_json_file , 'rb') as f:
-  data =   pickle.load(f)
+    data =   pickle.load(f)
 
 print(data["mapping"])
 print("Combined MFCC features saved to:", combined_json_file)
